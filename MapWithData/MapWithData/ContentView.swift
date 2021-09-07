@@ -11,7 +11,10 @@ import MapKit
 struct ContentView: View {
     @State private var region = MKCoordinateRegion(center:
                                 CLLocationCoordinate2D(latitude: -35.45285, longitude: +149.10719),
-                                span: MKCoordinateSpan(latitudeDelta: 0.125, longitudeDelta: 0.125))
+                                // span: MKCoordinateSpan(latitudeDelta: 0.125, longitudeDelta: 0.125),
+                                latitudinalMeters: 12500,
+                                longitudinalMeters: 12500
+    )
     
     var locations: [Location] = [ ]
     
@@ -20,17 +23,21 @@ struct ContentView: View {
     }
     
     var body: some View {
+        
         Map(coordinateRegion: $region,
+            interactionModes: .all,
             showsUserLocation: false,
-            userTrackingMode: .constant(.follow),
+            userTrackingMode: .none,
             annotationItems: locations) {
-            MapAnnotation(coordinate: $0.coordinate) {
-                Circle()
-                    .strokeBorder(Color.red, lineWidth: 4)
-                    .frame(width: 6, height: 6)
-            }
+                MapAnnotation(coordinate: $0.coordinate) {
+                    Circle()
+                        .fill(Color.secondary)
+                        .frame(width: 7, height: 7)
+                        .drawingGroup(opaque: true, colorMode: .extendedLinear)
+                }
         }
         .frame(width: 1536, height: 960)
+        // .drawingGroup()
     }
 }
 
