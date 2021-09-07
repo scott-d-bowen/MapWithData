@@ -9,7 +9,9 @@ import SwiftUI
 import MapKit
 
 struct ContentView: View {
-    @State private var region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: -35.45285, longitude: +149.10719), span: MKCoordinateSpan(latitudeDelta: 0.125, longitudeDelta: 0.125))
+    @State private var region = MKCoordinateRegion(center:
+                                CLLocationCoordinate2D(latitude: -35.45285, longitude: +149.10719),
+                                span: MKCoordinateSpan(latitudeDelta: 0.125, longitudeDelta: 0.125))
     
     var locations: [Location] = [ ]
     
@@ -18,9 +20,15 @@ struct ContentView: View {
     }
     
     var body: some View {
-        Map(coordinateRegion: $region, showsUserLocation: true, userTrackingMode: .constant(.follow),
+        Map(coordinateRegion: $region,
+            showsUserLocation: false,
+            userTrackingMode: .constant(.follow),
             annotationItems: locations) {
-            MapPin(coordinate: $0.coordinate)
+            MapAnnotation(coordinate: $0.coordinate) {
+                Circle()
+                    .strokeBorder(Color.red, lineWidth: 4)
+                    .frame(width: 6, height: 6)
+            }
         }
         .frame(width: 1536, height: 960)
     }
